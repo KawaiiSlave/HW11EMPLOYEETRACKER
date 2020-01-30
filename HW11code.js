@@ -24,7 +24,7 @@ function runSearch() {
           "Add a Department",
           "Add a Role",
           "Add an Employee",
-          "View all departments",
+          "View all Departments",
           "View all Roles",
           "View all Employees",
           "Update Employee Roles"
@@ -62,3 +62,20 @@ function runSearch() {
             }
           });
       }
+
+      
+      
+      function addDepartment() {
+        inquirer  
+          .prompt({
+            name: "Department",
+            type: "input",
+            message: "Which department would you like to add?",
+          
+          
+        }).then(function (data) {
+      let query = "INSERT INTO department (name) VALUES (?)";
+      connection.query(query, data.name);
+      runSearch();
+  });
+};
