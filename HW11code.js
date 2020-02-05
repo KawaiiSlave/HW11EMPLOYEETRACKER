@@ -29,7 +29,6 @@ function runSearch() {
           "View all Roles",
           "View all Employees",
           "Update Employee Roles",
-          "Exit"
         ]
       })
       .then(function(answer) {
@@ -60,11 +59,6 @@ function runSearch() {
 
               case "Update Employee Roles":
               updateRoles();
-              break;
-
-              case "Exit":
-              connection.end();
-              process.exit;
               break;  
             }
           });
@@ -73,7 +67,7 @@ function runSearch() {
       
 function addDepartment() {
       inquirer.prompt({
-            name: "Department",
+            name: "name",
             type: "input",
             message: "Which department would you like to add?",
           
