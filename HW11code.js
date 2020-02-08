@@ -74,7 +74,7 @@ function addDepartment() {
           
     }).then(function (data) {
       
-      let query = "INSERT INTO department (name) VALUES (?)";
+      let query = "INSERT INTO departments (name) VALUES (?)";
       connection.query(query, data.name);
       runSearch();
   });
@@ -85,7 +85,7 @@ function addDepartment() {
 
 function addRole() {
 
-  connection.query("SELECT * FROM department", function (err, result) {
+  connection.query("SELECT * FROM departments", function (err, result) {
       if (err) throw err;
       let choices = result.map((department) => {return department.name});
       inquirer.prompt([
@@ -112,7 +112,7 @@ function addRole() {
                   departmentID = parseInt(result[i].id);
               }
           }
-          let query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
+          let query = "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)";
           connection.query(query, [data.title, parseInt(data.salary), departmentID]);
           runSearch();
       });
@@ -122,7 +122,7 @@ function addRole() {
 
 
 function addEmployee() {
-  connection.query("SELECT * FROM role", function (err, result) {
+  connection.query("SELECT * FROM roles", function (err, result) {
       if (err) throw err;
       let choices = result.map((role) => {return role.title});
       inquirer.prompt([
@@ -150,7 +150,7 @@ function addEmployee() {
                   roleID = parseInt(result[i].id);
               }
           }
-          let query = "INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)";
+          let query = "INSERT INTO employees (first_name, last_name, role_id) VALUES (?, ?, ?)";
           connection.query(query, [data.firstName, data.lastName, roleID]);
           runSearch();
       });
@@ -159,7 +159,7 @@ function addEmployee() {
 
 
 function viewDepartments() {
-  connection.query("SELECT * FROM department", function (err, result) {
+  connection.query("SELECT * FROM departments", function (err, result) {
       if (err) throw err;
       let choices = result.map((department)=> department);
       inquirer.prompt({
@@ -183,7 +183,7 @@ function viewDepartments() {
 
 
 function viewRoles() {
-  connection.query("SELECT * FROM role;", function (err, result) {
+  connection.query("SELECT * FROM roles;", function (err, result) {
       if (err) throw err;
       let choices = result.map((role) => {return role.title});
       inquirer.prompt({
@@ -219,10 +219,10 @@ function viewEmployees() {
 
 
 function updateRoles() {
-  connection.query("SELECT * FROM role;", function (err, result) {
+  connection.query("SELECT * FROM roles;", function (err, result) {
       if (err) throw err;
       let roles = result.map((role) => {return role.title})
-      connection.query("SELECT e.first_name, e.last_name, e.role_id, r.title, r.id FROM employee AS e INNER JOIN role as r ON e.role_id = r.id;", function (err, info) {
+      connection.query("SELECT e.first_name, e.last_name, e.role_id, r.title, r.id FROM employees AS e INNER JOIN role as r ON e.role_id = r.id;", function (err, info) {
           if (err) throw err;
           let employees = info.map((employee) => {return employee.first_name + " " + employee.last_name});
           inquirer.prompt([
@@ -254,7 +254,7 @@ function updateRoles() {
                       newID = result[i].id;
                   }
               };
-              let query = "UPDATE employee SET employee.role_id = ? WHERE employee.first_name = ? AND employee.last_name = ?;";
+              let query = "UPDATE employees SET employee.role_id = ? WHERE employee.first_name = ? AND employee.last_name = ?;";
               connection.query(query, [newID, firstName, lastName]);
               runSearch();
           });
